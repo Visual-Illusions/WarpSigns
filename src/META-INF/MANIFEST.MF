@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Title: WarpSigns
+Version: 2.0.0
+Build: 20130302
+ProgramStatus: STABLE
+Vendor: Visual Illusions Entertainment
+Author: Jason (darkdiplomat)
+
