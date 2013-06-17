@@ -25,24 +25,24 @@
       </comments>
     </license>
   </licenses>
-  <url>http://docs.visualillusionsent.net/WarpSigns/</url>
+  <url>http://wiki.visualillusionsent.net/WarpSigns/</url>
   <inceptionYear>2012</inceptionYear>
   <organization>
-   <name>Visual Illusions Entertainment</name>
-   <url>http://visualillusionsent.net</url>
+    <name>Visual Illusions Entertainment</name>
+    <url>http://visualillusionsent.net</url>
   </organization>
   <scm>
-   <url>https://github.com/Visual-Illusions/WarpSigns</url>
-   <connection>GitHub</connection>
-   <developerConnection>scm:git:git@github.com:Visual-Illusions/WarpSigns.git</developerConnection>
+    <url>https://github.com/Visual-Illusions/WarpSigns</url>
+    <connection>scm:git:git@github.com:Visual-Illusions/WarpSigns.git</connection>
+    <developerConnection>scm:git:git@github.com:Visual-Illusions/WarpSigns.git</developerConnection>
   </scm>
   <issueManagement>
-   <url>http://github.com/Visual-Illusions/WarpSigns/issues</url>
-   <system>GitHub Issues Tracker</system>
+    <url>http://github.com/Visual-Illusions/WarpSigns/issues</url>
+    <system>GitHub Issues Tracker</system>
   </issueManagement>
   <ciManagement>
-   <url>http://ci.visualillusionsent.net/job/WarpSigns</url>
-   <system>Jenkins</system>
+    <url>http://ci.visualillusionsent.net/job/WarpSigns</url>
+    <system>Jenkins</system>
   </ciManagement>
   <distributionManagement>
     <repository>
