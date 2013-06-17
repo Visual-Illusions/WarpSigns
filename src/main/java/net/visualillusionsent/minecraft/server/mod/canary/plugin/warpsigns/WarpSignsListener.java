@@ -113,7 +113,7 @@ public final class WarpSignsListener implements PluginListener{
                 return;
             }
             setSign(sign, false);
-            player.sendMessage(Colors.GREEN.concat("Warp sign created!"));
+            player.message(Colors.GREEN.concat("Warp sign created!"));
         }
     }
 
