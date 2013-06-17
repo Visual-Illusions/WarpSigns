@@ -1,3 +1,20 @@
+/*
+ * This file is part of WarpSigns.
+ *
+ * Copyright © 2012-2013 Visual Illusions Entertainment
+ *
+ * WarpSigns is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * WarpSigns is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with WarpSigns.
+ * If not, see http://www.gnu.org/licenses/gpl.html.
+ */
 package net.visualillusionsent.minecraft.server.mod.canary.plugin.warpsigns;
 
 import java.io.IOException;
@@ -9,22 +26,8 @@ import net.visualillusionsent.utils.ProgramStatus;
 import net.visualillusionsent.utils.VersionChecker;
 
 /**
- * WarpSigns
- * <p>
- * Copyright (C) 2012 - 2013 Visual Illusions Entertainment.
- * <p>
- * This program is free software: you can redistribute it and/or modify it<br/>
- * under the terms of the GNU General Public License as published by the Free Software Foundation,<br/>
- * either version 3 of the License, or (at your option) any later version.
- * <p>
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;<br/>
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<br/>
- * See the GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License along with this program.<br/>
- * If not, see http://www.gnu.org/licenses/gpl.html
+ * WarpSigns main plugin class
  * 
- * @version 3.0
  * @author Jason (darkdiplomat)
  */
 public final class WarpSigns extends Plugin{
@@ -99,16 +102,16 @@ public final class WarpSigns extends Plugin{
 
     private final void checkStatus(){
         if (status == ProgramStatus.UNKNOWN) {
-            getLogman().severe("dConomy has declared itself as an 'UNKNOWN STATUS' build. Use is not advised and could cause damage to your system!");
+            getLogman().severe("WarpSigns has declared itself as an 'UNKNOWN STATUS' build. Use is not advised and could cause damage to your system!");
         }
         else if (status == ProgramStatus.ALPHA) {
-            getLogman().warning("dConomy has declared itself as a 'ALPHA' build. Production use is not advised!");
+            getLogman().warning("WarpSigns has declared itself as a 'ALPHA' build. Production use is not advised!");
         }
         else if (status == ProgramStatus.BETA) {
-            getLogman().warning("dConomy has declared itself as a 'BETA' build. Production use is not advised!");
+            getLogman().warning("WarpSigns has declared itself as a 'BETA' build. Production use is not advised!");
         }
         else if (status == ProgramStatus.RELEASE_CANDIDATE) {
-            getLogman().info("dConomy has declared itself as a 'Release Candidate' build. Expect some bugs.");
+            getLogman().info("WarpSigns has declared itself as a 'Release Candidate' build. Expect some bugs.");
         }
     }
 
@@ -119,7 +122,7 @@ public final class WarpSigns extends Plugin{
         }
         else if (!vc.isLatest()) {
             getLogman().warning(vc.getUpdateAvailibleMessage());
-            getLogman().warning("You can view update info @ http://wiki.visualillusionsent.net/dConomy#ChangeLog");
+            getLogman().warning("You can view update info @ http://wiki.visualillusionsent.net/WarpSigns#ChangeLog");
         }
     }
 
