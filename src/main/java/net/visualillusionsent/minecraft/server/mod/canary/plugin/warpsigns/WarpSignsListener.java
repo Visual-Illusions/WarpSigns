@@ -38,11 +38,12 @@ import net.visualillusionsent.utils.PropertiesFile;
  * 
  * @author Jason (darkdiplomat)
  */
-public final class WarpSignsListener implements PluginListener{
+public final class WarpSignsListener implements PluginListener {
+
     private final PropertiesFile warpProps;
     private final Logman logman;
 
-    public WarpSignsListener(WarpSigns plugin){
+    public WarpSignsListener(WarpSigns plugin) {
         boolean save = !new File("config/WarpSigns/setings.cfg").exists();
         this.warpProps = new PropertiesFile("config/WarpSigns/settings.cfg");
         warpProps.getBoolean("allow.always", true);
@@ -57,11 +58,11 @@ public final class WarpSignsListener implements PluginListener{
     }
 
     @HookHandler
-    public final void onBlockRightClick(BlockRightClickHook hook){
+    public final void onBlockRightClick(BlockRightClickHook hook) {
         Player player = hook.getPlayer();
         Block block = hook.getBlockClicked();
         if (isSign(block)) {
-            Sign sign = (Sign) player.getWorld().getComplexBlock(block);
+            Sign sign = (Sign) hook.getBlockClicked().getTileEntity();
             if (isWarpSign(sign.getTextOnLine(0))) {
                 Warp warptarget = Canary.warps().getWarp(sign.getTextOnLine(1));
                 if (warptarget != null) {
@@ -86,7 +87,7 @@ public final class WarpSignsListener implements PluginListener{
     }
 
     @HookHandler
-    public final void onSignChange(SignChangeHook hook){
+    public final void onSignChange(SignChangeHook hook) {
         Player player = hook.getPlayer();
         Sign sign = hook.getSign();
         if (sign.getTextOnLine(0).toLowerCase().matches("warp\\:|warp\\-all\\:")) {
@@ -117,23 +118,24 @@ public final class WarpSignsListener implements PluginListener{
         }
     }
 
-    private final void setSign(Sign sign, boolean bad){
+    private final void setSign(Sign sign, boolean bad) {
         sign.setTextOnLine((bad ? Colors.RED : Colors.LIGHT_GREEN).concat(sign.getTextOnLine(0).toLowerCase().matches("warp\\-all\\:") ? "Warp-All:" : "Warp:"), 0);
+        sign.update();
     }
 
-    private final boolean isSign(Block block){
+    private final boolean isSign(Block block) {
         return block.getType() == BlockType.WallSign || block.getType() == BlockType.SignPost;
     }
 
-    private final boolean isWarpSign(String text){
+    private final boolean isWarpSign(String text) {
         return text.length() > 2 && text.substring(2).matches("Warp\\:|Warp\\-All\\:");
     }
 
-    private final boolean isWarpAll(String text){
+    private final boolean isWarpAll(String text) {
         return text.substring(2).matches("Warp\\-All\\:");
     }
 
-    private final boolean canWarp(Warp warp, Player player){
+    private final boolean canWarp(Warp warp, Player player) {
         if (warpProps.getBoolean("allow.always")) {
             return true;
         }
@@ -142,7 +144,7 @@ public final class WarpSignsListener implements PluginListener{
         }
     }
 
-    private final boolean canCreate(Warp warp, Player player){
+    private final boolean canCreate(Warp warp, Player player) {
         if (player.hasPermission("warpsigns.create.all") || warpProps.getBoolean("allow.all.create")) {
             return true;
         }
@@ -155,7 +157,7 @@ public final class WarpSignsListener implements PluginListener{
         return false;
     }
 
-    private final boolean testGroups(Player player, Group[] groups){
+    private final boolean testGroups(Player player, Group[] groups) {
         if (groups == null) {
             return true;
         }
