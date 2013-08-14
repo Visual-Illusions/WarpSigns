@@ -50,6 +50,7 @@ public final class WarpSignsListener implements PluginListener {
         warpProps.getBoolean("allow.all.create", false);
         warpProps.getBoolean("require.warp.group", true);
         warpProps.getBoolean("log.warps", false);
+        warpProps.getBoolean("allow.world.load", true);
         if (save) {
             warpProps.save();
         }
@@ -68,6 +69,9 @@ public final class WarpSignsListener implements PluginListener {
                 if (warptarget != null) {
                     if (canWarp(warptarget, player) || isWarpAll(sign.getTextOnLine(0))) {
                         player.notice("Warping to ".concat(warptarget.getName()));
+                        if (warpProps.getBoolean("allow.world.load") && !Canary.getServer().getWorldManager().worldIsLoaded(warptarget.getLocation().getWorldName())) {
+                            Canary.getServer().getWorldManager().getWorld(warptarget.getLocation().getWorldName(), true);
+                        }
                         player.teleportTo(warptarget.getLocation());
                         if (warpProps.getBoolean("log.warps")) {
                             logman.info("Warped " + player.getName() + " to " + warptarget.getName() + " (" + warptarget.getLocation().toString() + ")");
@@ -78,7 +82,7 @@ public final class WarpSignsListener implements PluginListener {
                     }
                 }
                 else {
-                    player.notice("Warning: Warp " + sign.getTextOnLine(1) + " does not exist.");
+                    player.notice("Warning: Warp '" + sign.getTextOnLine(1) + "' does not exist.");
                 }
                 setSign(sign, warptarget == null);
                 hook.setCanceled();
