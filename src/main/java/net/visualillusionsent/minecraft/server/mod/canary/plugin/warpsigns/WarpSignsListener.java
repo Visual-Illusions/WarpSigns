@@ -67,7 +67,7 @@ public final class WarpSignsListener implements PluginListener {
             if (isWarpSign(sign.getTextOnLine(0))) {
                 Warp warptarget = Canary.warps().getWarp(sign.getTextOnLine(1));
                 if (warptarget != null) {
-                    if (canWarp(warptarget, player) || isWarpAll(sign.getTextOnLine(0))) {
+                    if (isWarpAll(sign.getTextOnLine(0)) || canWarp(warptarget, player)) {
                         player.notice("Warping to ".concat(warptarget.getName()));
                         if (warpProps.getBoolean("allow.world.load") && !Canary.getServer().getWorldManager().worldIsLoaded(warptarget.getLocation().getWorldName())) {
                             Canary.getServer().getWorldManager().getWorld(warptarget.getLocation().getWorldName(), true);
@@ -97,11 +97,13 @@ public final class WarpSignsListener implements PluginListener {
         if (sign.getTextOnLine(0).toLowerCase().matches("warp\\:|warp\\-all\\:")) {
             if (sign.getTextOnLine(1).isEmpty()) {
                 player.notice("Warning: You did not specify a Warp name.");
+                sign.getBlock().dropBlockAsItem(true);
                 hook.setCanceled();
                 return;
             }
             else if (sign.getTextOnLine(0).toLowerCase().matches("warp\\-all\\:") && !player.hasPermission("warpsigns.create.all")) {
                 player.notice("Warning: You do not have permission to create Warp-All signs.");
+                sign.getBlock().dropBlockAsItem(true);
                 hook.setCanceled();
                 return;
             }
@@ -109,11 +111,13 @@ public final class WarpSignsListener implements PluginListener {
             Warp warptarget = Canary.warps().getWarp(sign.getTextOnLine(1));
             if (warptarget == null) {
                 player.notice("Warning: Warp " + sign.getTextOnLine(1) + " does not exist.");
+                sign.getBlock().dropBlockAsItem(true);
                 hook.setCanceled();
                 return;
             }
             else if (!canCreate(warptarget, player)) {
                 player.notice("Warning: You do not have permission to create a Warp sign for that Warp.");
+                sign.getBlock().dropBlockAsItem(true);
                 hook.setCanceled();
                 return;
             }
@@ -136,7 +140,7 @@ public final class WarpSignsListener implements PluginListener {
     }
 
     private final boolean isWarpAll(String text) {
-        return text.substring(2).matches("Warp\\-All\\:");
+        return text.substring(2).equals("Warp-All:");
     }
 
     private final boolean canWarp(Warp warp, Player player) {
