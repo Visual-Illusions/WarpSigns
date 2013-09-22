@@ -145,12 +145,7 @@ public final class WarpSignsListener implements PluginListener {
     }
 
     private final boolean canWarp(Warp warp, Player player) {
-        if (warpProps.getBoolean("allow.always")) {
-            return true;
-        }
-        else {
-            return testGroups(player, warp.getGroups());
-        }
+        return warpProps.getBoolean("allow.always") || testGroups(player, warp.getGroups());
     }
 
     private final boolean canCreate(Warp warp, Player player) {
@@ -158,19 +153,13 @@ public final class WarpSignsListener implements PluginListener {
             return true;
         }
         else if (player.hasPermission("warpsigns.create")) {
-            if (warpProps.getBoolean("require.warp.group")) {
-                return testGroups(player, warp.getGroups());
-            }
-            return true;
+            return !warpProps.getBoolean("require.warp.group") || testGroups(player, warp.getGroups());
         }
         return false;
     }
 
     private final boolean testGroups(Player player, Group[] groups) {
-        if (groups == null) {
-            return true;
-        }
-        else if (groups.length == 0) {
+        if (groups == null || groups.length == 0) {
             return true;
         }
         for (Group group : groups) {

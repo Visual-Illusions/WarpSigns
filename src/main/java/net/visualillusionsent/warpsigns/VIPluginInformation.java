@@ -24,7 +24,6 @@ import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.commandsys.CommandListener;
-import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.utils.StringUtils;
 import net.visualillusionsent.utils.VersionChecker;
 
@@ -62,7 +61,7 @@ public final class VIPluginInformation implements CommandListener {
         }
     }
 
-    private final String center(String toCenter) {
+    private String center(String toCenter) {
         String strColorless = TextFormat.removeFormatting(toCenter);
         return StringUtils.padCharLeft(toCenter, (int)(Math.floor(63 - strColorless.length()) / 2), ' ');
     }
@@ -79,7 +78,7 @@ public final class VIPluginInformation implements CommandListener {
                 if (islatest == null) {
                     msgrec.message(center(Colors.GRAY + "VersionCheckerError: " + vc.getErrorMessage()));
                 }
-                else if (!vc.isLatest()) {
+                else if (!islatest) {
                     msgrec.message(center(Colors.GRAY + vc.getUpdateAvailibleMessage()));
                 }
                 else {

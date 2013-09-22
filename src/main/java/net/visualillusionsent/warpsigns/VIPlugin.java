@@ -57,7 +57,7 @@ public abstract class VIPlugin extends Plugin {
         if (islatest == null) {
             getLogman().warning("VersionCheckerError: " + vc.getErrorMessage());
         }
-        else if (!vc.isLatest()) {
+        else if (!islatest) {
             getLogman().warning(vc.getUpdateAvailibleMessage());
             getLogman().warning(String.format("You can view update info @ %s#ChangeLog", getWikiURL()));
         }
