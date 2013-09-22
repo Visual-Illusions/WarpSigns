@@ -1,7 +1,7 @@
-/warpsigns.jardesc
 /.classpath
 /.project
 /bin
 /.settings
 /target
-/buildNumber.properties
+/.idea
+*.iml

@@ -15,11 +15,8 @@
  * You should have received a copy of the GNU General Public License along with WarpSigns.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
-package net.visualillusionsent.minecraft.server.mod.canary.plugin.warpsigns;
+package net.visualillusionsent.warpsigns;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import net.canarymod.Canary;
 import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
@@ -27,51 +24,57 @@ import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.CommandDependencyException;
 import net.canarymod.commandsys.CommandListener;
+import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.utils.StringUtils;
 import net.visualillusionsent.utils.VersionChecker;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
- * WarpSigns Information command
- * 
+ * Visual Illusions Plugin Information command
+ *
  * @author Jason (darkdiplomat)
  */
-public final class WarpSignsInformation implements CommandListener{
+public final class VIPluginInformation implements CommandListener {
     private final List<String> about;
-    private final WarpSigns warpsigns;
+    private final VIPlugin plugin;
 
-    public WarpSignsInformation(WarpSigns warpsigns){
-        this.warpsigns = warpsigns;
+    public VIPluginInformation(VIPlugin plugin) {
+        this.plugin = plugin;
         List<String> pre = new ArrayList<String>();
-        pre.add(center(Colors.CYAN + "---" + Colors.LIGHT_GREEN + "WarpSigns " + Colors.PURPLE + "v" + warpsigns.getRawVersion() + Colors.CYAN + " ---"));
+        pre.add(center(Colors.CYAN + "---" + Colors.LIGHT_GREEN + plugin.getName() + " " + Colors.ORANGE + "v" + plugin.getVersion() + Colors.CYAN + " ---"));
         pre.add("$VERSION_CHECK$");
-        pre.add(Colors.CYAN + "Build: " + Colors.LIGHT_GREEN + warpsigns.getBuildNumber());
-        pre.add(Colors.CYAN + "Built: " + Colors.LIGHT_GREEN + warpsigns.getBuildTime());
-        pre.add(Colors.CYAN + "Developer: " + Colors.LIGHT_GREEN + "DarkDiplomat");
-        pre.add(Colors.CYAN + "Website: " + Colors.LIGHT_GREEN + "http://wiki.visualillusionsent.net/WarpSigns");
-        pre.add(Colors.CYAN + "Issues: " + Colors.LIGHT_GREEN + "https://github.com/Visual-Illusions/WarpSigns/issues");
+        pre.add(Colors.CYAN + "Jenkins Build: " + Colors.LIGHT_GREEN + plugin.getBuild());
+        pre.add(Colors.CYAN + "Built On: " + Colors.LIGHT_GREEN + plugin.getBuildTime());
+        pre.add(Colors.CYAN + "Developer(s): " + Colors.LIGHT_GREEN + plugin.getDevelopers());
+        pre.add(Colors.CYAN + "Website: " + Colors.LIGHT_GREEN + plugin.getWikiURL());
+        pre.add(Colors.CYAN + "Issues: " + Colors.LIGHT_GREEN + plugin.getIssuesURL());
 
-        // Next 2 lines should always remain at the end of the About
-        pre.add(center("§aCopyright © 2012-2013 §2Visual §6I§9l§bl§4u§as§2i§5o§en§7s §2Entertainment"));
+        // Next line should always remain at the end of the About
+        pre.add(center("§BCopyright © 2012-2013 §AVisual §6I§9l§Bl§4u§As§2i§5o§En§7s §6Entertainment"));
         about = Collections.unmodifiableList(pre);
         try {
-            Canary.commands().registerCommands(this, warpsigns, false);
+            Canary.commands().registerCommands(this, plugin, false);
         }
-        catch (CommandDependencyException ex) {}
+        catch (CommandDependencyException ex) {
+        }
     }
 
-    private final String center(String toCenter){
+    private final String center(String toCenter) {
         String strColorless = TextFormat.removeFormatting(toCenter);
-        return StringUtils.padCharLeft(toCenter, (int) (Math.floor(63 - strColorless.length()) / 2), ' ');
+        return StringUtils.padCharLeft(toCenter, (int)(Math.floor(63 - strColorless.length()) / 2), ' ');
     }
 
-    @Command(aliases = { "warpsigns" },
-            description = "WarpSigns Information Command",
-            permissions = { "" },
-            toolTip = "/warpsigns")
-    public final void infoCommand(MessageReceiver msgrec, String[] args){
+    @Command(aliases = {"warpsigns"},
+            description = "Displays plugin information",
+            permissions = {""},
+            toolTip = "WarpSigns Information Command")
+    public final void infoCommand(MessageReceiver msgrec, String[] args) {
         for (String msg : about) {
             if (msg.equals("$VERSION_CHECK$")) {
-                VersionChecker vc = warpsigns.getVersionChecker();
+                VersionChecker vc = plugin.getVersionChecker();
                 Boolean islatest = vc.isLatest();
                 if (islatest == null) {
                     msgrec.message(center(Colors.GRAY + "VersionCheckerError: " + vc.getErrorMessage()));
