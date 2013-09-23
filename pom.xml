@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.visualillusionsent</groupId>
     <artifactId>WarpSigns</artifactId>
-    <version>3.2</version>
+    <version>3.3-ALPHA-1</version>
     <name>WarpSigns</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,7 +21,7 @@
             <email>darkdiplomat@visualillusionsent.net</email>
             <url>http://wiki.visualillusionsent.net/Darkdiplomat</url>
             <organization>Visual Illusions Entertainment</organization>
-            <organizationUrl>http://mojo.codehaus.org</organizationUrl>
+            <organizationUrl>http://visualillusionsent.net</organizationUrl>
             <roles>
                 <role>lead-developer</role>
                 <role>manager</role>
