@@ -17,30 +17,15 @@
  */
 package net.visualillusionsent.warpsigns;
 
-import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPlugin;
+import net.visualillusionsent.minecraft.plugin.MessageTranslator;
+import net.visualillusionsent.minecraft.plugin.VisualIllusionsPlugin;
 
 /**
- * WarpSigns main plugin class
- *
  * @author Jason (darkdiplomat)
  */
-public final class WarpSigns extends VisualIllusionsCanaryPlugin {
+final class WarpSignsTranslate extends MessageTranslator {
 
-    @Override
-    public final boolean enable() {
-        try {
-            super.enable();
-            new WarpSignsListener(this);
-        }
-        catch (Exception ex) {
-            getLogman().error("WarpSigns failed to enable...", ex);
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public final void disable() {
-        // no logic needed
+    WarpSignsTranslate(VisualIllusionsPlugin plugin, String defaultLocale, boolean updateLang) {
+        super(plugin, defaultLocale, updateLang);
     }
 }

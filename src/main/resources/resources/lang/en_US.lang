@@ -1,0 +1,18 @@
+;# {name} - English (US) Language File
+;# Copyright © {copyright.years} Visual Illusions Entertainment
+;# Licensed under the {gpl.type}
+;# This file NEEDS to be in UTF-8 format!
+;# This file is also the default Language file and needs to be included
+;# DO NOT MODIFY THIS FILE! clone the file to create new translations.
+;# Saving the new file as <localeCode>.lang
+
+cfg.reload.success=WarpSigns configuration reloaded.
+cfg.reload.fail=Failed to reload WarpSigns configuration...
+warp.to=Warping to {0}.
+world.not.loaded=Failed to warp to {0}, world not loaded.
+use.denied=You do not have permission to use this Warp...
+bad.warp=Warning: Warp ''{0}'' does not exist.
+bad.warp.name=Warning: You did not specify a Warp name.
+create.denied.warpall=Warning: You do not have permission to create Warp-All signs.
+create.denied=Warning: You do not have permission to create a Warp sign for that Warp.
+create.success=Warp sign created!
