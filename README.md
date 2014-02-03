@@ -1,10 +1,10 @@
 ﻿# WarpSigns #
-### Sign-based warping plugin for the CanaryMod (Recode) ###
+### Sign-based warping plugin for the CanaryMod ###
 #### Copyright &copy; 2012-2014 Visual Illusions Entertainment ####
 #### Licensed under the GNU General Public License v3 (See License below) ####
 
 ## About ##
-See the [WarpSigns Wiki Page](http://wiki.visualillusionsent.net/WarpSigns) for more information
+See the [WarpSigns Wiki Page](http://wiki.visualillusionsent.net/view/WarpSigns) for more information
 
 ## Bug Reporting ##
 Please use the [GitHub issue tracker](https://github.com/Visual-Illusions/WarpSigns/issues) associated with this repository.<br/>

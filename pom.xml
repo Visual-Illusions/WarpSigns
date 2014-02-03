@@ -6,7 +6,7 @@
     <version>3.3.0-SNAPSHOT</version>
     <name>WarpSigns</name>
     <description>Sign-based Warp system for CanaryMod</description>
-    <url>http://wiki.visualillusionsent.net/WarpSigns/</url>
+    <url>http://wiki.visualillusionsent.net/view/WarpSigns/</url>
     <inceptionYear>2012</inceptionYear>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -44,7 +44,7 @@
                 the Free Software Foundation, either version 3 of the License, or
                 (at your option) any later version.
 
-                WarpSigns is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+                This Program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
                 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
                 See the GNU General Public License for more details.
             </comments>
