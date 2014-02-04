@@ -99,13 +99,13 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
         if (isSign(block)) {
             Sign sign = (Sign) hook.getBlockClicked().getTileEntity();
             if (isWarpSign(sign.getTextOnLine(0))) {
-                Warp warptarget = Canary.warps().getWarp(sign.getTextOnLine(1));
+                Warp warptarget = Canary.warps().getWarp(getWarpName(sign));
                 if (warptarget != null) {
                     if (isWarpAll(sign.getTextOnLine(0)) || canWarp(warptarget, player)) {
-                        if (warpProps.getBoolean("allow.world.load") && !Canary.getServer().getWorldManager().worldIsLoaded(warptarget.getLocation().getWorldName())) {
+                        if (warpProps.getBoolean("allow.world.load") && !Canary.getServer().getWorldManager().worldIsLoaded(warptarget.getLocation().getWorld().getFqName())) {
                             Canary.getServer().getWorldManager().getWorld(warptarget.getLocation().getWorldName(), true);
                         }
-                        if (Canary.getServer().getWorldManager().worldIsLoaded(warptarget.getLocation().getWorldName())) {
+                        if (Canary.getServer().getWorldManager().worldIsLoaded(warptarget.getLocation().getWorld().getFqName())) {
                             player.notice(trans.localeTranslate("warp.to", player.getLocale(), warptarget.getName()));
                             player.teleportTo(warptarget.getLocation());
                             if (warpProps.getBoolean("log.warps")) {
@@ -121,7 +121,7 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
                     }
                 }
                 else {
-                    player.notice(trans.localeTranslate("bad.warp", player.getLocale(), warptarget.getName()));
+                    player.notice(trans.localeTranslate("bad.warp", player.getLocale(), getWarpName(sign)));
                 }
                 updateSign(sign, warptarget == null);
                 hook.setCanceled();
@@ -134,7 +134,7 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
         Player player = hook.getPlayer();
         Sign sign = hook.getSign();
         if (warpOrWarpAllIgnoreCase.reset(sign.getTextOnLine(0)).matches()) {
-            if (sign.getTextOnLine(1).isEmpty()) {
+            if (getWarpName(sign).isEmpty()) {
                 player.notice(trans.localeTranslate("bad.warp.name", player.getLocale()));
                 sign.getBlock().dropBlockAsItem(true);
                 hook.setCanceled();
@@ -147,9 +147,9 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
                 return;
             }
 
-            Warp warptarget = Canary.warps().getWarp(sign.getTextOnLine(1));
+            Warp warptarget = Canary.warps().getWarp(getWarpName(sign));
             if (warptarget == null) {
-                player.notice(trans.localeTranslate("bad.warp", player.getLocale(), sign.getTextOnLine(1)));
+                player.notice(trans.localeTranslate("bad.warp", player.getLocale(), getWarpName(sign)));
                 sign.getBlock().dropBlockAsItem(true);
                 hook.setCanceled();
                 return;
@@ -194,6 +194,10 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
             return !warpProps.getBoolean("require.warp.group") || testGroups(player, warp.getGroups());
         }
         return false;
+    }
+
+    private String getWarpName(Sign sign) {
+        return sign.getTextOnLine(1) + sign.getTextOnLine(2) + sign.getTextOnLine(3);
     }
 
     private boolean testGroups(Player player, Group[] groups) {
