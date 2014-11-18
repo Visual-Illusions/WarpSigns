@@ -14,7 +14,7 @@ Copyright © 2012-2014 Visual Illusions Entertainment
     <inceptionYear>2012</inceptionYear>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vimcplugin.version>1.1.1-SNAPSHOT</vimcplugin.version>
+        <vimcplugin.version>1.2.0-SNAPSHOT</vimcplugin.version>
         <canary.main.class>${project.groupId}.${project.artifactId}.${project.name}</canary.main.class>
         <status.url>http://status.visualillusionsent.net/</status.url>
         <devs>darkdiplomat</devs>
@@ -93,7 +93,7 @@ Copyright © 2012-2014 Visual Illusions Entertainment
         <!-- Mods -->
         <dependency>
             <groupId>net.visualillusionsent</groupId>
-            <artifactId>vimcplugin</artifactId>
+            <artifactId>mcpluginlib</artifactId>
             <version>${vimcplugin.version}</version>
         </dependency>
         <!-- Mods End -->
@@ -217,26 +217,22 @@ Copyright © 2012-2014 Visual Illusions Entertainment
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <finalName>${project.name}-${project.version}${build.number}</finalName>
                             <artifactSet>
                                 <includes>
                                     <!-- Only need to shade the VIMCPlugin stuff -->
-                                    <include>net.visualillusionsent:vimcplugin</include>
+                                    <include>net.visualillusionsent:mcpluginlib</include>
                                 </includes>
                             </artifactSet>
                             <filters>
                                 <filter>
-                                    <artifact>net.visualillusionsent:vimcplugin</artifact>
+                                    <artifact>net.visualillusionsent:mcpluginlib</artifact>
                                     <includes>
                                         <!-- Always include the license stuff -->
                                         <include>META-INF/license/**</include>
                                         <!-- Always include base VIMCPlugin stuff -->
                                         <include>net/visualillusionsent/minecraft/plugin/**</include>
                                     </includes>
-                                    <excludes>
-                                        <!-- Bukkit/Spout are unused at this time -->
-                                        <exclude>net/visualillusionsent/minecraft/plugin/bukkit/**</exclude>
-                                        <exclude>net/visualillusionsent/minecraft/plugin/spout/**</exclude>
-                                    </excludes>
                                 </filter>
                             </filters>
                             <!-- Relocate the classes to appropriate packages -->
@@ -244,14 +240,16 @@ Copyright © 2012-2014 Visual Illusions Entertainment
                                 <!-- Relocate base VIMCPlugin stuff to base of plugin -->
                                 <relocation>
                                     <pattern>net.visualillusionsent.minecraft.plugin</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.mcpluginlib</shadedPattern>
                                 </relocation>
                                 <!-- Canary -->
                                 <relocation>
                                     <pattern>net.visualillusionsent.minecraft.plugin.canary</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}</shadedPattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.mcpluginlib.canary
+                                    </shadedPattern>
                                 </relocation>
                             </relocations>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
                         </configuration>
                     </execution>
                 </executions>

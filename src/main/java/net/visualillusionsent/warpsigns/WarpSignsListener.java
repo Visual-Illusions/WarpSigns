@@ -22,7 +22,6 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.Sign;
-import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.Command;
 import net.canarymod.commandsys.CommandDependencyException;
@@ -33,6 +32,7 @@ import net.canarymod.logger.Logman;
 import net.canarymod.plugin.PluginListener;
 import net.canarymod.user.Group;
 import net.canarymod.warp.Warp;
+import net.visualillusionsent.minecraft.plugin.ChatFormat;
 import net.visualillusionsent.minecraft.plugin.canary.VisualIllusionsCanaryPluginInformationCommand;
 import net.visualillusionsent.utils.PropertiesFile;
 
@@ -161,12 +161,12 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
                 return;
             }
             updateSign(sign, false);
-            player.message(Colors.GREEN.concat(trans.localeTranslate("create.success", player.getLocale())));
+            player.message(ChatFormat.GREEN.concat(trans.localeTranslate("create.success", player.getLocale())));
         }
     }
 
     private void updateSign(Sign sign, boolean bad) {
-        sign.setTextOnLine((bad ? Colors.RED : Colors.LIGHT_GREEN).concat(sign.getTextOnLine(0).toLowerCase().contains("warp-all:") ? "Warp-All:" : "Warp:"), 0);
+        sign.setTextOnLine((bad ? ChatFormat.RED : ChatFormat.LIGHT_GREEN).concat(sign.getTextOnLine(0).toLowerCase().contains("warp-all:") ? "Warp-All:" : "Warp:"), 0);
         sign.update();
     }
 
