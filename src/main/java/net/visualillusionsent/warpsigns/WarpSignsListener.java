@@ -10,14 +10,16 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the ${licence.type} for more details.
+ * See the GNU General Public License v3 for more details.
  *
- * You should have received a copy of the ${gpl.type} along with this program.
+ * You should have received a copy of the GNU General Public License v3 along with this program.
  * If not, see http://www.gnu.org/licenses/gpl.html.
  */
 package net.visualillusionsent.warpsigns;
 
 import net.canarymod.Canary;
+import net.canarymod.api.chat.ChatComponent;
+import net.canarymod.api.chat.ChatFormatting;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockType;
@@ -52,6 +54,10 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
     private final Matcher warpOrWarpAllIgnoreCase = Pattern.compile("(?i)warp(\\-all)?:").matcher(""),
             warpAllIgnoreCase = Pattern.compile("(?i)warp\\-all:").matcher(""),
             warpOrWarpAll = Pattern.compile("Warp(\\-All)?:").matcher("");
+    private final ChatComponent warpAll = Canary.factory().getChatComponentFactory().newChatComponent("Warp-All:"),
+            warp = Canary.factory().getChatComponentFactory().newChatComponent("Warp:");
+    private final ChatFormatting good = Canary.factory().getChatComponentFactory().colorGreen(),
+            bad = Canary.factory().getChatComponentFactory().colorDarkRed();
 
 
     public WarpSignsListener(WarpSigns plugin) throws CommandDependencyException {
@@ -98,10 +104,10 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
         Block block = hook.getBlockClicked();
         if (isSign(block)) {
             Sign sign = (Sign) hook.getBlockClicked().getTileEntity();
-            if (isWarpSign(sign.getTextOnLine(0))) {
+            if (isWarpSign(getText(sign, 0))) {
                 Warp warptarget = Canary.warps().getWarp(getWarpName(sign));
                 if (warptarget != null) {
-                    if (isWarpAll(sign.getTextOnLine(0)) || canWarp(warptarget, player)) {
+                    if (isWarpAll(getText(sign, 0)) || canWarp(warptarget, player)) {
                         if (warpProps.getBoolean("allow.world.load") && !Canary.getServer().getWorldManager().worldIsLoaded(warptarget.getLocation().getWorld().getFqName())) {
                             Canary.getServer().getWorldManager().getWorld(warptarget.getLocation().getWorldName(), true);
                         }
@@ -133,14 +139,14 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
     public final void onSignChange(SignChangeHook hook) {
         Player player = hook.getPlayer();
         Sign sign = hook.getSign();
-        if (warpOrWarpAllIgnoreCase.reset(sign.getTextOnLine(0)).matches()) {
+        if (warpOrWarpAllIgnoreCase.reset(getText(sign, 0)).matches()) {
             if (getWarpName(sign).isEmpty()) {
                 player.notice(trans.localeTranslate("bad.warp.name", player.getLocale()));
                 sign.getBlock().dropBlockAsItem(true);
                 hook.setCanceled();
                 return;
             }
-            else if (warpAllIgnoreCase.reset(sign.getTextOnLine(0)).matches() && !player.hasPermission("warpsigns.create.all")) {
+            else if (warpAllIgnoreCase.reset(getText(sign, 0)).matches() && !player.hasPermission("warpsigns.create.all")) {
                 player.notice(trans.localeTranslate("create.denied.warpall", player.getLocale()));
                 sign.getBlock().dropBlockAsItem(true);
                 hook.setCanceled();
@@ -166,7 +172,9 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
     }
 
     private void updateSign(Sign sign, boolean bad) {
-        sign.setTextOnLine((bad ? ChatFormat.RED : ChatFormat.LIGHT_GREEN).concat(sign.getTextOnLine(0).toLowerCase().contains("warp-all:") ? "Warp-All:" : "Warp:"), 0);
+        ChatComponent toSet = getText(sign, 0).toLowerCase().equals("warp-all:") ? warpAll.clone() : warp.clone();
+        toSet.getChatStyle().setColor(bad ? this.bad : this.good);
+        sign.setComponentOnLine(toSet, 0);
         sign.update();
     }
 
@@ -175,11 +183,11 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
     }
 
     private boolean isWarpSign(String text) {
-        return text.length() > 2 && warpOrWarpAll.reset(text.substring(2)).matches();
+        return warpOrWarpAll.reset(text).matches();
     }
 
     private boolean isWarpAll(String text) {
-        return text.length() > 2 && text.substring(2).equals("Warp-All:");
+        return text.equals("Warp-All:");
     }
 
     private boolean canWarp(Warp warp, Player player) {
@@ -197,7 +205,7 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
     }
 
     private String getWarpName(Sign sign) {
-        return sign.getTextOnLine(1) + sign.getTextOnLine(2) + sign.getTextOnLine(3);
+        return getText(sign, 1) + getText(sign, 2) + getText(sign, 3);
     }
 
     private boolean testGroups(Player player, Group[] groups) {
@@ -217,5 +225,9 @@ public final class WarpSignsListener extends VisualIllusionsCanaryPluginInformat
             return msgrec.getLocale();
         }
         return warpProps.getString("server.locale");
+    }
+
+    private String getText(Sign sign, int line) {
+        return sign.getComponentOnLine(line).getText();
     }
 }
