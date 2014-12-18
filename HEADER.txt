@@ -1,15 +1,15 @@
 This file is part of ${name}.
 
-Copyright © ${copyright.years} Visual Illusions Entertainment
+Copyright © ${years} Visual Illusions Entertainment
 
 ${name} is free software: you can redistribute it and/or modify
-it under the terms of the ${license} as published by
+it under the terms of the ${license.type} as published by
 the Free Software Foundation, either version 3 of the License,
 or (at your option) any later version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-See the ${license} for more details.
+See the ${licence.type} for more details.
 
-You should have received a copy of the ${license} along with this program.
+You should have received a copy of the ${gpl.type} along with this program.
 If not, see ${license.url}.

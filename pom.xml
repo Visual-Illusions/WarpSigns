@@ -14,19 +14,18 @@ Copyright © 2012-2014 Visual Illusions Entertainment
     <inceptionYear>2012</inceptionYear>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vimcplugin.version>1.2.0-SNAPSHOT</vimcplugin.version>
+        <mcpluginlib.version>1.2.0-SNAPSHOT</mcpluginlib.version>
         <canary.main.class>${project.groupId}.${project.artifactId}.${project.name}</canary.main.class>
         <status.url>http://status.visualillusionsent.net/</status.url>
         <devs>darkdiplomat</devs>
-        <license>GNU General Public License v3</license>
+        <license.type>GNU General Public License v3</license.type>
         <license.url>http://www.gnu.org/licenses/gpl.html</license.url>
-        <plugin.version>${project.version}</plugin.version>
         <copyright.years>${project.inceptionYear}-${current.year}</copyright.years>
         <build.number/>
         <!-- Jar Signing -->
         <keystore.path/>
-        <keystore.alias/>
         <keystore.pass/>
+        <keystore.alias/>
         <keystore.key.pass/>
     </properties>
     <organization>
@@ -90,13 +89,11 @@ Copyright © 2012-2014 Visual Illusions Entertainment
         </repository>
     </repositories>
     <dependencies>
-        <!-- Mods -->
         <dependency>
             <groupId>net.visualillusionsent</groupId>
             <artifactId>mcpluginlib</artifactId>
-            <version>${vimcplugin.version}</version>
+            <version>${mcpluginlib.version}</version>
         </dependency>
-        <!-- Mods End -->
     </dependencies>
     <build>
         <finalName>${project.name}-${project.version}${build.number}</finalName>
@@ -105,9 +102,8 @@ Copyright © 2012-2014 Visual Illusions Entertainment
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <!-- CanaryMod -->
                     <include>*.inf</include>
-                    <!-- All other files -->
+                    <include>META-INF/**</include>
                     <include>resources/**</include>
                 </includes>
             </resource>
@@ -196,9 +192,9 @@ Copyright © 2012-2014 Visual Illusions Entertainment
                     </mapping>
                     <properties>
                         <name>${project.name}</name>
-                        <copyright.years>${project.inceptionYear}-${current.year}</copyright.years>
-                        <license>GNU General Public License</license>
-                        <license.url>http://www.gnu.org/licenses/gpl.html</license.url>
+                        <years>${copyright.years}</years>
+                        <license.type>${license.type}</license.type>
+                        <license.url>${license.url}</license.url>
                     </properties>
                     <includes>
                         <include>src/main/java/**</include>
@@ -217,7 +213,6 @@ Copyright © 2012-2014 Visual Illusions Entertainment
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>${project.name}-${project.version}${build.number}</finalName>
                             <artifactSet>
                                 <includes>
                                     <!-- Only need to shade the VIMCPlugin stuff -->
@@ -233,6 +228,10 @@ Copyright © 2012-2014 Visual Illusions Entertainment
                                         <!-- Always include base VIMCPlugin stuff -->
                                         <include>net/visualillusionsent/minecraft/plugin/**</include>
                                     </includes>
+                                    <excludes>
+                                        <!-- Sponge unused at this time -->
+                                        <exclude>net/visualillusionsent/minecraft/plugin/sponge/**</exclude>
+                                    </excludes>
                                 </filter>
                             </filters>
                             <!-- Relocate the classes to appropriate packages -->
@@ -240,16 +239,9 @@ Copyright © 2012-2014 Visual Illusions Entertainment
                                 <!-- Relocate base VIMCPlugin stuff to base of plugin -->
                                 <relocation>
                                     <pattern>net.visualillusionsent.minecraft.plugin</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}.mcpluginlib</shadedPattern>
-                                </relocation>
-                                <!-- Canary -->
-                                <relocation>
-                                    <pattern>net.visualillusionsent.minecraft.plugin.canary</pattern>
-                                    <shadedPattern>${project.groupId}.${project.artifactId}.mcpluginlib.canary
-                                    </shadedPattern>
+                                    <shadedPattern>${project.groupId}.${project.artifactId}.lib</shadedPattern>
                                 </relocation>
                             </relocations>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
                         </configuration>
                     </execution>
                 </executions>
@@ -257,6 +249,17 @@ Copyright © 2012-2014 Visual Illusions Entertainment
         </plugins>
     </build>
     <profiles>
+        <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <build.number>-b${BUILD_NUMBER}</build.number>
+            </properties>
+        </profile>
         <!-- Should remain last profile -->
         <profile>
             <id>sign-jar</id>
@@ -283,10 +286,10 @@ Copyright © 2012-2014 Visual Illusions Entertainment
                         <configuration>
                             <archiveDirectory>target/</archiveDirectory>
                             <excludes>
-                                <exclude>dummyload.jar</exclude>
+                                <exclude>*.jar</exclude>
                             </excludes>
                             <includes>
-                                <include>*.jar</include>
+                                <include>${project.name}*.jar</include>
                             </includes>
                             <keystore>${keystore.path}</keystore>
                             <alias>${keystore.alias}</alias>
